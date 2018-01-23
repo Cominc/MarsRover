@@ -47,7 +47,7 @@ public class Rover {
 		indexDirection = fromLabelToIndex(direction);
 	}
 	
-	public boolean turnLeft(){
+	private boolean turnLeft(){
 		if(indexDirection==0)
 			indexDirection = 3;
 		else
@@ -55,12 +55,12 @@ public class Rover {
 		return true;
 	}
 	
-	public boolean turnRight(){
+	private boolean turnRight(){
 		indexDirection = (indexDirection+1)%N_DIRECTIONS;
 		return true;
 	}
 	
-	public boolean moveForward(){
+	private boolean moveForward(){
 		int nextX = position.x;
 		int nextY = position.y;
 		switch(indexDirection){
@@ -80,7 +80,7 @@ public class Rover {
 		return move(nextX,nextY);
 	}
 	
-	public boolean moveBackward(){
+	private boolean moveBackward(){
 		int nextX = position.x;
 		int nextY = position.y;
 		switch(indexDirection){

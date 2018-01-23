@@ -19,7 +19,8 @@ public class Planet {
 	}
 	
 	public void setObstacle(int x, int y, boolean obstacle){
-		grid[x][y]=obstacle;
+		if(x<dimX && y<dimY)
+			grid[x][y]=obstacle;
 	}
 	
 	public boolean isObstacle(int x, int y){
