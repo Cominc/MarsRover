@@ -11,10 +11,12 @@ public class Rover {
 	
 	private int indexDirection;
 	private Point position;
+	private Planet planet;
 	
-	public Rover(char direction, Point position) {
+	public Rover(char direction, Point position, Planet planet) {
 		this.indexDirection = fromLabelToIndex(direction);
 		this.position = position;
+		this.planet = planet;
 	}
 	
 	public Point getPosition() {
@@ -29,55 +31,89 @@ public class Rover {
 		return DIRECTIONS[indexDirection];
 	}
 
+	public Planet getPlanet() {
+		return planet;
+	}
+
+	public void setPlanet(Planet planet) {
+		this.planet = planet;
+	}
+
 	public void setDirection(char direction) {
 		indexDirection = fromLabelToIndex(direction);
 	}
 	
-	public void turnLeft(){
+	public boolean turnLeft(){
 		if(indexDirection==0)
 			indexDirection = 3;
 		else
 			indexDirection = (indexDirection-1)%N_DIRECTIONS;
+		return true;
 	}
 	
-	public void turnRight(){
+	public boolean turnRight(){
 		indexDirection = (indexDirection+1)%N_DIRECTIONS;
+		return true;
 	}
 	
-	public void moveForward(){
-		//TODO implementare
+	
+	//TODO idea implementare uno unico metodo move con parametro?
+	public boolean moveForward(){
+		//TODO calcolare next
+		int nextX = position.x;
+		int nextY = position.y;
+		return move(nextX,nextY);
 	}
 	
-	public void moveBackward(){
-		//TODO implementare
+	public boolean moveBackward(){
+		//TODO calcolare next
+		int nextX = position.x;
+		int nextY = position.y;
+		return move(nextX,nextY);
+		
+	}
+	
+	private boolean move(int nextX,int nextY){
+		if(planet.isObstacle(nextX, nextY))
+			return false;
+		else{
+			position.x = nextX;
+			position.y = nextY;
+			return true;
+		}
 	}
 	
 	public boolean executeCommands(char[] commands){
 		for(int i=0; i< commands.length; i++){
 			System.out.println(commands[i]);
 			if(!executeCommand(commands[i]))
+			{
+				System.out.println("Obstacle found!");
 				return false;
+			}
 			System.out.println(this);
 		}
 		return true;
 	}
 	
+	private boolean obstacleDetection(){
+		//TODO implementare metodo
+		return false;
+	}
+	
 	private boolean executeCommand(char command){
 		switch(command){
 			case FORWARD_COMMAND:
-				moveForward();
-				break;
+				return moveForward();
 			case BACKWARD_COMMAND:
-				moveBackward();
-				break;
+				return moveBackward();
 			case TURNLEFT_COMMAND:
-				turnLeft();
-				break;
+				return turnLeft();
 			case TURNRIGHT_COMMAND:
-				turnRight();
-				break;
+				return turnRight();
+			default:
+				return false;
 		}
-		return true;
 	}
 	
 	private int fromLabelToIndex(char direction){
