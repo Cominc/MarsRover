@@ -4,6 +4,10 @@ import java.awt.Point;
 public class Rover {
 	private static final int N_DIRECTIONS = 4;
 	private static final char[] DIRECTIONS = {'N','E','S','W'};
+	private static final int NORTH= 0;
+	private static final int EAST = 1;
+	private static final int SOUTH = 2;
+	private static final int WEST = 3;
 	private static final char FORWARD_COMMAND = 'f';
 	private static final char BACKWARD_COMMAND = 'b';
 	private static final char TURNLEFT_COMMAND = 'l';
@@ -56,24 +60,55 @@ public class Rover {
 		return true;
 	}
 	
-	
-	//TODO idea implementare uno unico metodo move con parametro?
 	public boolean moveForward(){
-		//TODO calcolare next
 		int nextX = position.x;
 		int nextY = position.y;
+		switch(indexDirection){
+			case NORTH:
+				nextY++;
+				break;
+			case EAST:
+				nextX++;
+				break;
+			case SOUTH:
+				nextY--;
+				break;
+			case WEST:
+				nextX--;
+				break;
+		}
 		return move(nextX,nextY);
 	}
 	
 	public boolean moveBackward(){
-		//TODO calcolare next
 		int nextX = position.x;
 		int nextY = position.y;
+		switch(indexDirection){
+			case NORTH:
+				nextY--;
+				break;
+			case EAST:
+				nextX--;
+				break;
+			case SOUTH:
+				nextY++;
+				break;
+			case WEST:
+				nextX++;
+				break;
+		}
 		return move(nextX,nextY);
-		
 	}
 	
 	private boolean move(int nextX,int nextY){
+		if(nextX==-1)
+			nextX=planet.getDimX()-1;
+		if(nextY==-1)
+			nextY=planet.getDimY()-1;
+		
+		nextX = nextX%planet.getDimX();
+		nextY = nextY%planet.getDimY();
+		
 		if(planet.isObstacle(nextX, nextY))
 			return false;
 		else{
@@ -94,11 +129,6 @@ public class Rover {
 			System.out.println(this);
 		}
 		return true;
-	}
-	
-	private boolean obstacleDetection(){
-		//TODO implementare metodo
-		return false;
 	}
 	
 	private boolean executeCommand(char command){
