@@ -2,7 +2,6 @@ import java.awt.Point;
 
 
 public class Rover {
-	private static final int N_DIRECTIONS = 4;
 	private static final char[] DIRECTIONS = {'N','E','S','W'};
 	private static final int NORTH= 0;
 	private static final int EAST = 1;
@@ -12,6 +11,7 @@ public class Rover {
 	private static final char BACKWARD_COMMAND = 'b';
 	private static final char TURNLEFT_COMMAND = 'l';
 	private static final char TURNRIGHT_COMMAND = 'r';
+	private static final String ROVER_PRINT = "Rover %c [%d,%d]";
 	
 	private int indexDirection;
 	private Point position;
@@ -19,8 +19,12 @@ public class Rover {
 	
 	public Rover(char direction, Point position, Planet planet) {
 		this.indexDirection = fromLabelToIndex(direction);
-		this.position = position;
 		this.planet = planet;
+		if(planet.validXY(position.x, position.y))
+			this.position = position;
+		else
+			this.position = new Point(0,0);
+		
 	}
 	
 	public Point getPosition() {
@@ -51,12 +55,12 @@ public class Rover {
 		if(indexDirection==0)
 			indexDirection = 3;
 		else
-			indexDirection = (indexDirection-1)%N_DIRECTIONS;
+			indexDirection = (indexDirection-1)%DIRECTIONS.length;
 		return true;
 	}
 	
 	private boolean turnRight(){
-		indexDirection = (indexDirection+1)%N_DIRECTIONS;
+		indexDirection = (indexDirection+1)%DIRECTIONS.length;
 		return true;
 	}
 	
@@ -162,8 +166,8 @@ public class Rover {
 	}
 
 	@Override
-	public String toString() {
-		return "Rover "+getDirection()+" ["+position.x+","+position.y+"]";
+	public String toString(){
+		return String.format(ROVER_PRINT, getDirection(), position.x, position.y);
 	}
 
 }
